@@ -4,13 +4,16 @@ function getSamples(id) {
     d3.json("samples.json").then(sampleData =>{
         console.log(sampleData)
 
-        var ids = sampleData.samples[0].otu_ids;
+        var samples = sampleData.samples.filter(x => x.id == id)[0]
+
+
+        var ids = samples.otu_ids;
         console.log(ids)
 
-        var sampleValues = sampleData.samples[0].sample_values.slice(0, 10).reverse();
+        var sampleValues = samples.sample_values.slice(0, 10).reverse();
         console.log(sampleValues)
 
-        var labels = sampleData.samples[0].otu_labels.slice(0, 10);
+        var labels = samples.otu_labels.slice(0, 10);
         console.log(labels)
 
 // 2. Create horizontal bar chart with a dropdown menu to dispaly the top 10 OTUs found in that individual
@@ -18,12 +21,12 @@ function getSamples(id) {
     // out_ids => labels for bar chart
     // out_labels => hovertext for chart
 
-        var top_otu = (sampleData.samples[0].otu_ids.slice(0,10)).reverse();
+        var top_otu = (samples.otu_ids.slice(0,10)).reverse();
 
         var otu_id = top_otu.map(d => "OTU" + d);
         console.log(`OTU IDs: ${otu_id}`)
 
-        var labels = sampleData.samples[0].otu_labels.slice(0, 10);
+        var labels = samples.otu_labels.slice(0, 10);
         console.log(`OTU labels: ${labels}`)
 
         var trace = {
@@ -62,14 +65,14 @@ function getSamples(id) {
     // otu_labels => text values
 
         var trace1 = {
-            x: sampleData.samples[0].otu_ids,
-            y: sampleData.samples[0].sample_values,
+            x: samples.otu_ids,
+            y: samples.sample_values,
             mode: "markers",
             marker: {
-                size: sampleData.samples[0].sample_values,
-                color: sampleData.samples[0].otu_ids
+                size: samples.sample_values,
+                color: samples.otu_ids
             },
-            text: sampleData.samples[0].otu_lables
+            text: samples.otu_lables
         };
 
         var layout_2 = {
@@ -135,11 +138,7 @@ init();
 
 
 
-// 6. Update all of the plots anytime that a new sample is selected
-// Advanced Challenge Assignment
-    //  Adapt the gauge chart to the plot the weekly washing frequency of the indicidual
-    // modify the example gauge code 
-    // Update the chart whenever a new sample is selected
+
 
 
 
